@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:shopping_list_app/data/categories.dart';
 import 'package:shopping_list_app/models/category.dart';
+import 'package:shopping_list_app/models/grocery_item.dart';
 
 class NewItem extends StatefulWidget {
   const NewItem({super.key});
@@ -13,11 +14,17 @@ class _NewItemState extends State<NewItem> {
   final _formKey = GlobalKey<FormState>();
   var _enteredName = '';
   var _enteredQuantity = 1;
-  var _selectedCategory = categories[Categories.other];
+  var _selectedCategory = categories[Categories.other]!;
 
   void _saveItem() {
     if (_formKey.currentState!.validate()) {
       _formKey.currentState!.save();
+      Navigator.of(context).pop(GroceryItem(
+        name: _enteredName,
+        id: DateTime.now().toString(),
+        quantity: _enteredQuantity,
+        category: _selectedCategory,
+      ));
     }
   }
 
@@ -99,9 +106,10 @@ class _NewItemState extends State<NewItem> {
                               ))
                       ],
                       onChanged: (value) {
-                        setState(() {
-                          _selectedCategory = value;
-                        });
+                        _selectedCategory = value!;
+                      },
+                      onSaved: (newValue) {
+                        _selectedCategory = newValue!;
                       },
                     ),
                   ),
