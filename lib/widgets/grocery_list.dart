@@ -95,6 +95,13 @@ class _GroceryListState extends State<GroceryList> {
         _groceryItems.insert(index, item);
       });
     }
+
+    if (response.body == 'null') {
+      setState(() {
+        _isLoading = false;
+        return;
+      });
+    }
   }
 
   @override
